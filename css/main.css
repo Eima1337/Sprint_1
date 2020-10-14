@@ -1,7 +1,7 @@
 * {
     box-sizing: border-box;
 }
-table {
+  table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -15,4 +15,7 @@ table {
   
   tr:nth-child(even) {
     background-color: #dddddd;
+  }
+  a {
+    text-decoration: none;
   }
