@@ -10,7 +10,9 @@
 </head>
 <body>
     <?php
-        $path = "./" . $_GET['path'];
+        $path = "." . $_GET['path'];
+        print ($path);
+        // print($_GET['path']);
         $dir_contents = scandir($path);
         echo ("<table><thead><tr>
         <th>Type</th>
@@ -21,7 +23,7 @@
         foreach ($dir_contents as $cont) {
             echo("<tr><td>" . (is_dir($cont) ? "Dir" : "File") . "</td>");
             if (is_dir($cont)) {
-                echo("<td>" . "<a href='./?path=" . $_GET['path'] . "/" . $cont . "'>" . $cont .  "</a></td>");
+                echo("<td>" . "<a href='./?path=" . "/" . $cont . "'>" . $cont .  "</a></td>");
             } else {
                 echo("<td>" . $cont . "</td>");
             }
@@ -32,6 +34,7 @@
             }
         }
         echo("</tbody></table>");
+        echo("<button>" . "<a href='?path='>" . "BACK" . "</a>" . "</button>");
     ?>
 
 
