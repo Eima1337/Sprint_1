@@ -19,6 +19,9 @@
         </tr></thead>");
         echo ("<tbody><tr>");
         foreach ($dir_contents as $cont) {
+            if ($cont == "." || $cont == "..") {
+                continue;
+            }
             echo("<tr><td>" . (is_dir($cont) ? "Dir" : "File") . "</td>");
             if (is_dir($path . "/" . $cont)) {
                 echo("<td>" . "<a href='./?path=" . $_GET['path'] . "/" . $cont . "'>" . $cont .  "</a></td>");
@@ -32,7 +35,14 @@
             }
         }
         echo("</tbody></table>");
-        echo("<button>" . "<a href='?path='>" . "BACK" . "</a>" . "</button>");
+        $split = explode("/", $_GET['path']);
+        print($_GET['path']);
+        $emptyString = ".";
+        for ($i = 0; $i < count($split) - 1; $i++) {
+            $emptyString = "/" . $split[$i];
+        }
+        $emptyString .= "/";
+        echo("<button>" . "<a href='./?path=" . $emptyString . "'>" . "BACK" . "</a>" . "</button>");
     ?>
 
 
