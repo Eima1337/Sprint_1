@@ -16,8 +16,7 @@
         <th>Type</th>
         <th>Name</th>
         <th>Actions</th>
-        </tr></thead>
-        ");
+        </tr></thead>");
         echo ("<tbody><tr>");
         foreach ($dir_contents as $cont) {
             echo("<tr><td>" . (is_dir($cont) ? "Dir" : "File") . "</td>");
