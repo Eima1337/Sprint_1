@@ -10,7 +10,7 @@
 </head>
 <body>
     <?php
-        $path = ".";
+        $path = "./" . $_GET['path'];
         $dir_contents = scandir($path);
         echo ("<table><thead><tr>
         <th>Type</th>
@@ -21,7 +21,11 @@
         echo ("<tbody><tr>");
         foreach ($dir_contents as $cont) {
             echo("<tr><td>" . (is_dir($cont) ? "Dir" : "File") . "</td>");
-            echo("<td>" . "<a href='$cont'>" . $cont . "</a>" . "</td>");
+            if (is_dir($cont)) {
+                echo("<td>" . "<a href='./?path=" . $_GET['path'] . "/" . $cont . "'>" . $cont .  "</a></td>");
+            } else {
+                echo("<td>" . $cont . "</td>");
+            }
             if (is_file($cont)) {
                 echo("<td><button>Delete</button></td>");
             } else {
