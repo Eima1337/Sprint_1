@@ -1,5 +1,21 @@
 <?php
 session_start();
+
+if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+    session_start();
+    unset($_SESSION['username']);
+    unset($_SESSION['password']);
+    unset($_SESSION['logged_in']);
+}
+
+if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+    if ($_POST['username'] == 'user' && $_POST['password'] == 'user1') {
+        $_SESSION['logged_in'] = true;
+        $_SESSION['username'] = 'user';
+    } else {
+        $msg = 'Wrong username or password!';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,20 +29,33 @@ session_start();
 </head>
 
 <body>
-    <h1>Web file browser</h1>
-    <h2>Please login to see content!</h2>
-    <?php
-    if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-        if ($_POST['username'] == "user" && $_POST['password'] == "user1") {
-            $_SESSION['logged_in'] = true;
-            $_SESSION['timeout'] = time();
-            $_SESSION['username'] = "User";
-            echo "You've successfully logged in!";
-        } else {
-            echo "Wrong username or password";
+    <div>
+        <?php 
+        $msg = '';
+        if(isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+            if($_POST['username'] == 'user' && $_POST['password'] == 'user1') {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['timeout'] = time();
+                $_SESSION['username'] = 'user';
+            } else {
+                $msg = 'Wrong username or password!';
+            }
         }
-    }
+        ?>
+    </div>
+    <?php 
+        if($_SESSION['logged_in'] == false) {
+            echo('<form action = "" method = "post">' );
+            echo('<h2>' . $msg . '</h2>');
+            echo('<h3>Log In </h3>');
+            echo('<input type = "text" name = "username" placeholder = "user" required autofocus></br>');
+            echo('<input type = "password" name = "password" placeholder = "user1" required><br>');
+            echo('<button class = "button" type = "submit" name = "login">Login</button>');
+            echo('</form>');
+            die();
+        }
     ?>
+    <h1>Web file browser</h1>
     <?php
     $path = "." . $_GET['path'];
     if (isset($_POST['name'])) {
@@ -81,7 +110,7 @@ session_start();
         <br>
         <br>
     </form>
-
+<!-- 
     <form action="" method="POST">
         <label for="username">Enter your username</label>
         <br>
@@ -92,7 +121,7 @@ session_start();
         <input type="password" name="password" id="password" placeholder="user1">
         <br>
         <input type="submit" value="Login">
-    </form>
+    </form> -->
 </body>
 
 </html>
