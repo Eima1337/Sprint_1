@@ -70,8 +70,6 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
         mkdir($path . "/" . ($_POST['name']));
     }
     if(isset($_POST['upload'])) {
-        print_r($_FILES);
-        print_r($_POST);
         $file_name = $_FILES['file']['name'];
         $file_size = $_FILES['file']['size'];
         $file_tmp = $_FILES['file']['tmp_name'];
