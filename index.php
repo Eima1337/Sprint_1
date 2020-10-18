@@ -1,11 +1,11 @@
 <?php
 session_start();
-
-if (isset($_GET['action']) && $_GET['action'] == 'logout') {
+if (isset($_GET['logout'])) {
     session_start();
     unset($_SESSION['username']);
     unset($_SESSION['password']);
     unset($_SESSION['logged_in']);
+    // session_destroy();
 }
 
 if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
@@ -27,6 +27,11 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
+<style>
+    button {
+        margin-right: 5px;
+  }
+</style>
 
 <body>
     <div>
@@ -53,7 +58,10 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
             echo('<button class = "button" type = "submit" name = "login">Login</button>');
             echo('</form>');
             die();
-        }
+        } 
+        // else {
+        //     echo('<button type="submit" name="logout">Logout</button>');
+        // }
     ?>
     <h1>Web file browser</h1>
     <?php
@@ -61,8 +69,37 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     if (isset($_POST['name'])) {
         mkdir($path . "/" . ($_POST['name']));
     }
-    if (array_key_exists('file', $_GET)) {
-        unlink($path . "/" . $_GET['file']);
+    if(isset($_POST['upload'])) {
+        print_r($_FILES);
+        print_r($_POST);
+        $file_name = $_FILES['file']['name'];
+        $file_size = $_FILES['file']['size'];
+        $file_tmp = $_FILES['file']['tmp_name'];
+        $file_type = $_FILES['file']['type'];
+        $file_store = ($path . "/") . $file_name;
+        move_uploaded_file($file_tmp, $file_store);  
+    }
+    if (array_key_exists('action', $_GET)) {    
+        if (array_key_exists('file', $_GET)) {
+                $file = $_GET['path'] . "/" . $_GET['file'];
+            if ($_GET['action'] == 'delete') {
+                unlink($path . "/" . $_GET['file']);
+            } elseif ($_GET['action'] == 'download') {
+                $fileDown = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+                ob_clean();
+                ob_flush();
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/pdf');
+                header('Content-Disposition: attachment; filename=' . basename($fileDown));
+                header('Content-Transfer-Encoding: binary');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($fileDown));
+                ob_end_flush();
+                readfile($fileDown);
+            }
+        }
     }
     $dir_contents = scandir($path);
     echo ("<table><thead><tr>
@@ -83,7 +120,7 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
         }
         if (is_file($path . "/" . $cont)) {
             if ($cont != "index.php") {
-                echo ("<td><button><a href='./?path=" . $_GET['path'] . "&file=" . $cont . "'>" . "Delete</a></button></td>");
+                echo ("<td><button><a href='./?path=" . $_GET['path'] . "&file=" . $cont . "&action=delete" . "'>" . "Delete</a></button><button><a href='./?path=" . $_GET['path'] . "&file=" . $cont . "&action=download" . "'>" . "Download</a></button></td>");
             } else {
                 echo ("<td></td>");
             }
@@ -110,18 +147,14 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
         <br>
         <br>
     </form>
-<!-- 
-    <form action="" method="POST">
-        <label for="username">Enter your username</label>
+    <form action="./index.php" method="GET">
+        <button type="submit" name="logout">Logout</button>
+    </form>
+    <form action="" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
         <br>
-        <input type="text" name="username" id="username" placeholder="user">
-        <br>
-        <label for="password">Enter your password</label>
-        <br>
-        <input type="password" name="password" id="password" placeholder="user1">
-        <br>
-        <input type="submit" value="Login">
-    </form> -->
+        <button type="submit" name="upload">Upload file</button>
+    </form>
 </body>
 
 </html>
