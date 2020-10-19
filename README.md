@@ -1,6 +1,6 @@
 # Web file browser
 ## Start using file browser: 
-    1) Open website.
+    1) Open website. (index.php)
     2) Login to see the content.
 ## Functionality:
     1) You can move through folders back and forth by either going in folder or clicking back button.
