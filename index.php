@@ -87,7 +87,6 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
                 ob_clean();
                 ob_flush();
                 header('Content-Description: File Transfer');
-                header('Content-Type: application/pdf');
                 header('Content-Disposition: attachment; filename=' . basename($fileDown));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
