@@ -24,8 +24,8 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web File Browser</title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/Sprint_1/css/normalize.css">
+    <link rel="stylesheet" href="/Sprint_1/css/main.css">
 </head>
 <style>
     button {
