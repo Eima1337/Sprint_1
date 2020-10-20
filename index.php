@@ -24,8 +24,8 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web File Browser</title>
-    <link rel="stylesheet" href="/Sprint_1/css/normalize.css">
-    <link rel="stylesheet" href="/Sprint_1/css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <style>
     button {
@@ -84,8 +84,6 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
                 unlink($path . "/" . $_GET['file']);
             } elseif ($_GET['action'] == 'download') {
                 $fileDown = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
-                ob_clean();
-                ob_flush();
                 header('Content-Description: File Transfer');
                 header('Content-Disposition: attachment; filename=' . basename($fileDown));
                 header('Content-Transfer-Encoding: binary');
@@ -93,8 +91,10 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($fileDown));
-                ob_end_flush();
+                ob_clean();
+                ob_flush();
                 readfile($fileDown);
+                exit;
             }
         }
     }
