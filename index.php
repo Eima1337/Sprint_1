@@ -79,20 +79,22 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     }
     if (array_key_exists('action', $_GET)) {    
         if (array_key_exists('file', $_GET)) {
-                $file = $_GET['path'] . "/" . $_GET['file'];
+                $file = "./" . $_GET['path'] . "./" . $_GET['file'];
             if ($_GET['action'] == 'delete') {
                 unlink($path . "/" . $_GET['file']);
             } elseif ($_GET['action'] == 'download') {
                 $fileDown = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
+                ob_clean();
+                ob_flush();
                 header('Content-Description: File Transfer');
+                header('Content-Type: application/pdf');
                 header('Content-Disposition: attachment; filename=' . basename($fileDown));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');
                 header('Content-Length: ' . filesize($fileDown));
-                ob_clean();
-                ob_flush();
+                ob_end_flush();
                 readfile($fileDown);
                 exit;
             }
